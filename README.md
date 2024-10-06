@@ -85,6 +85,7 @@ Make sure you have the following installed:
    ```bash
    MONGO_URI=<your-mongodb-connection-string>
    JWT_SECRET=<your-jwt-secret>
+   PORT=<port_no>
    ```
 
 4. **Start the Backend:**
@@ -93,7 +94,7 @@ Make sure you have the following installed:
    npm run dev
    ```
 
-   The backend API will be running on `http://localhost:5000`.
+   The backend API will be running on `http://localhost:8000`.
 
 ### Frontend Setup
 
