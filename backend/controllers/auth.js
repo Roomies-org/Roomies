@@ -5,6 +5,18 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config.js";
 import nodemailer from "nodemailer";
+import Handlebars from "handlebars";
+import { promises as fs } from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
+
+const templatePath = path.join(__dirname, "../templates/otp-email.hbs");
+
+console.log(templatePath);
 
 const registration = async (req, res) => {
   const registerSchema = Joi.object({
@@ -94,7 +106,7 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         responseCode: apiResponseCode.BAD_REQUEST,
-        responseMessage: `User with email ${email} does not exist`,
+        responseMessage: `User with email: ${email} does not exist`,
         data: null,
       });
     }
@@ -119,6 +131,14 @@ const login = async (req, res) => {
 
     await user.save();
 
+    const source = await fs.readFile(templatePath, "utf-8");
+    const Otptemplate = Handlebars.compile(source);
+
+    const OtpEmailHtml = Otptemplate({
+      username: user.username,
+      otpCode: otpCode,
+    });
+
     const transporter = nodemailer.createTransport({
       service: config.emailService,
       host: config.emailHost,
@@ -137,7 +157,7 @@ const login = async (req, res) => {
       from: config.emailUser,
       to: user.email,
       subject: "ROOMIES OTP VERIFICATION",
-      text: `Hi ${user.username} Your OTP code is ${otpCode}. It will expire in 5 minutes`,
+      html: OtpEmailHtml,
     });
 
     res.status(200).json({
