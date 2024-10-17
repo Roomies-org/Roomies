@@ -1,6 +1,8 @@
 // import React from 'react';
 import { Link } from 'react-router-dom';
 import wallet from '../../assets/wallet.png'
+import { useNavigate } from 'react-router-dom';
+
 
 const Navbar = () => {
   // Define the navbar items array
@@ -10,11 +12,18 @@ const Navbar = () => {
     { name: "OnChain", path: "/onchain" },
     { name: "Wallet", path: "/wallet" }
   ];
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate('/'); // Programmatically navigate to /hero
+  };
+
 
   return (
     <nav  style={{ backgroundColor: '#0052FE' }} className="flex justify-between items-center py-4 px-8 bg-black text-white">
       {/* Left side with title */}
-      <div className="text-2xl font-bold">RoomieOnBase</div>
+      <div className="text-2xl font-bold cursor-pointer"
+       onClick={handleBack}>RoomieOnBase</div>
 
       {/* Right side with dynamic navigation items */}
       <div className="flex items-center space-x-8">
