@@ -2,6 +2,7 @@
 import  { useState } from 'react';
 import { Link } from 'react-router-dom';
 import openness from '../../assets/openness.png'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
@@ -10,6 +11,11 @@ const Login = () => {
   const [error, setError] = useState('');
   
 
+  const navigate = useNavigate();
+
+  const handleCode = () => {
+    navigate('/code'); // i dont know where thuis is linked to but i added it to button continue
+  };
   // Form submit handler
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,7 +43,7 @@ const Login = () => {
         
         {/* Left Section */}
         <div className="w-1/2 p-8 rounded-md">
-        <div>
+        <div className='bg-white p-8 rounded-md'>
         <h2 style={{color:'#002572'}}
         className="text-4xl font-bold mb-16">
             Discover Your Personality OnChain
@@ -68,6 +74,7 @@ const Login = () => {
           </p>
             <div>
             <button
+            onClick={handleCode}
               type="submit"
               className="w-full py-3 px-16 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors duration-300"
             >
